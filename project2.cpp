@@ -1,13 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
 #include <algorithm>
 #include <stack>
-#include <queue>
+#include <cmath>
 #include <limits>
-#include <io.h>
-#define ERROR 0.001
+#define ERROR 0.00001
 
 using namespace std;
 
@@ -43,38 +41,34 @@ double** iterDPMap(double** in, int r, int c) {
 	return ans;
 }
 
-queue<string> fastestPaths(double** map, double** in, int r, int c) {
+stack<string> fastestPaths(double** map, double** in, int r, int c) {
 	stack <string> path;
-	queue <string> ans;
 	for (int j = 0; j < c; j++){
 		int loc = j;
 		for(int i = r-1; i > 0; i--){
-			if(loc > 0 && map[i][loc] - map[i-1][loc-1] + 1.4 * in[i][loc] < ERROR){
-				path.push("SE ");
+			if(loc > 0 && abs(map[i][loc] - (map[i-1][loc-1] + 1.4 * in[i][loc])) < ERROR){
+				path.push(" SE ");
 				loc--;
-			} else if(loc < c-1 && map[i][loc] - map[i-1][loc+1] + 1.4 * in[i][loc] < ERROR){
-				path.push("SW ");
+			} else if(loc < c-1 && abs(map[i][loc] - (map[i-1][loc+1] + 1.4 * in[i][loc])) < ERROR){
+				path.push(" SW ");
 				loc++;
 			} else
-				path.push("S ");
+				path.push(" S ");
 		}
 		ostringstream str1;
 		str1 << loc;
 		string loc_string = str1.str();
 
 		path.push(loc_string);
-		while (!path.empty()){
-			ans.push(static_cast<basic_string<char> &&>(path.top()));
-			path.pop();
-		}
+		path.push("\n");
 	}
-	return ans;
+	return path;
 }
 
 int main()
 {
 	ifstream input;
-    input.open("C:\\Users\\Gabriel\\Downloads\\input-small.txt");
+    input.open("input-small.txt");
 	if (!input) {
 		cout << "Error opening input.txt for reading." << endl;
 		return 1;
@@ -105,12 +99,12 @@ int main()
 	initializeMatrix(&costMap, r, c);
 	costMap = iterDPMap(in, r, c);
 
-	queue <string> answer = fastestPaths(costMap, in, r, c);
+	stack <string> answer = fastestPaths(costMap, in, r, c);
 
 	for (int i = 0; i < c; ++i)
 	{
-		for(int j = 0; i < r; ++j){
-			cout << answer.front();
+		for(int j = 0; j <= r; ++j){
+			cout << answer.top();
 			answer.pop();
 		}
 		cout << endl;

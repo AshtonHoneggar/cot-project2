@@ -11,36 +11,50 @@
 
 using namespace std;
 
+// Initializes a dynamic 2D array -> arr[r][c]
 inline void initializeMatrix(double*** arr, int r, int c) {
-	*arr = new double*[r];
-	for (int i = 0; i < r; ++i)
-        (*arr)[i] = new double[c];
+	*arr = new double*[r];			// Creates an array of double pointers size r
+	for (int i = 0; i < r; ++i)		// For each double pointer in arr,
+        (*arr)[i] = new double[c];	// Set as an array of size c
 }
 
+//==========================================================
+// Iteratively creates and returns a 2D map of costs.
+// Each "tile" contains the minimum cost required
+// to reach that tile starting from the top row.
+//----------------------------------------------------------
+// in: a 2D double array which is the input map.
+// r: the number of rows
+// c: the number of columns
+//==========================================================
 double** iterDPMap(double** in, int r, int c) {
-	double min;
-	double** ans;
-	double max = numeric_limits<double>::infinity();
-	initializeMatrix(&ans, r, c);
+	double min;		// Stores the value of the minimum cost tile
+	double** ans;	// Stores the cost map to be returned
+	initializeMatrix(&ans, r, c); // Initializes ans to size r x c
 
-	for (int i = 0; i < r; ++i) {
-		for (int j = 0; j < c; ++j){
-			if (i == 0)
-				ans[0][j] =	in[0][j];
-			else
+	for (int i = 0; i < r; ++i) { // Starting at the top row, and for each row
+		for (int j = 0; j < c; ++j){ // Starting at the leftmost column, and for each column
+			
+			if (i == 0) // If location is in the first row
+				ans[0][j] =	in[0][j]; // Then the lowest cost is just the cost of that tile
+			else // If the location is in any other row
 			{
-                min = ans[i-1][j] + in[i][j];
+                // Set min to be the cost of the current tile plus minCost of the North tile
+				min = ans[i-1][j] + in[i][j];
 
+				// Check if the NW tile exists and if the cost is lower than the North tile
                 if(j > 0 && ans[i-1][j-1] + 1.4 * in[i][j] < min)
                     min = ans[i-1][j-1] + 1.4 * in[i][j];
+				
+				// Check if the NE tile exists and if the cost is lower than the North or NW tiles
                 if(j < c-1 && ans[i-1][j+1] + 1.4 * in[i][j] < min)
                     min = ans[i-1][j+1] + 1.4 * in[i][j];
 
-				ans[i][j] = min;
+				ans[i][j] = min; // Set the tile to be the minimum value of the three options
 			}
 		}
 	}
-	return ans;
+	return ans; // Return the 2D cost map array
 }
 
 queue <string> fastestPaths(double** map, double** in, int r, int c) {

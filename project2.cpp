@@ -5,6 +5,8 @@
 #include <stack>
 #include <cmath>
 #include <limits>
+#include <queue>
+
 #define ERROR 0.00001
 
 using namespace std;
@@ -41,8 +43,9 @@ double** iterDPMap(double** in, int r, int c) {
 	return ans;
 }
 
-stack<string> fastestPaths(double** map, double** in, int r, int c) {
+queue <string> fastestPaths(double** map, double** in, int r, int c) {
 	stack <string> path;
+	queue <string> ans;
 	for (int j = 0; j < c; j++){
 		int loc = j;
 		for(int i = r-1; i > 0; i--){
@@ -61,8 +64,12 @@ stack<string> fastestPaths(double** map, double** in, int r, int c) {
 
 		path.push(loc_string);
 		path.push("\n");
+		while(!path.empty()){
+			ans.push(path.top());
+			path.pop();
+		}
 	}
-	return path;
+	return ans;
 }
 
 int main()
@@ -73,12 +80,6 @@ int main()
 		cout << "Error opening input.txt for reading." << endl;
 		return 1;
 	}
-
-//    ifstream output("output.txt", fstream::out);
-//    if (!output) {
-//        cout << "Error opening output.txt for writing." << endl;
-//        return 1;
-//    }
 
 	int r , c;
 	input >>  r;
@@ -99,15 +100,20 @@ int main()
 	initializeMatrix(&costMap, r, c);
 	costMap = iterDPMap(in, r, c);
 
-	stack <string> answer = fastestPaths(costMap, in, r, c);
+	queue <string> answer = fastestPaths(costMap, in, r, c);
+
+	ofstream output("output.txt", fstream::out);
+	if (!output) {
+		cout << "Error opening output.txt for writing." << endl;
+		return 1;
+	}
 
 	for (int i = 0; i < c; ++i)
 	{
 		for(int j = 0; j <= r; ++j){
-			cout << answer.top();
+			output << answer.front();
 			answer.pop();
 		}
-		cout << endl;
 	}
 
 }

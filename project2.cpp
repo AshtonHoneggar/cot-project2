@@ -7,6 +7,7 @@
 #include <queue>
 #include <limits>
 #include <io.h>
+#define ERROR 0.001
 
 using namespace std;
 
@@ -48,14 +49,14 @@ queue<string> fastestPaths(double** map, double** in, int r, int c) {
 	for (int j = 0; j < c; j++){
 		int loc = j;
 		for(int i = r-1; i > 0; i--){
-			if(loc > 0 && map[i][loc] == map[i-1][loc-1] + 1.4 * in[i][loc]){
-				path.push("SE");
+			if(loc > 0 && map[i][loc] - map[i-1][loc-1] + 1.4 * in[i][loc] < ERROR){
+				path.push("SE ");
 				loc--;
-			} else if(loc < c-1 && map[i][loc] == map[i-1][loc+1] + 1.4 * in[i][loc]){
-				path.push("SW");
+			} else if(loc < c-1 && map[i][loc] - map[i-1][loc+1] + 1.4 * in[i][loc] < ERROR){
+				path.push("SW ");
 				loc++;
 			} else
-				path.push("S");
+				path.push("S ");
 		}
 		ostringstream str1;
 		str1 << loc;

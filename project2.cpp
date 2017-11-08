@@ -65,7 +65,7 @@ queue <string> fastestPaths(double** map, double** in, int r, int c) {
 		path.push(loc_string);
 		path.push("\n");
 		while(!path.empty()){
-			ans.push(path.top());
+			ans.push(path.top()); //Have to check in C4 lab if this works. IDE says to cast to static_cast<basic_string<char> &&>, fails when compiling on cmd line.
 			path.pop();
 		}
 	}

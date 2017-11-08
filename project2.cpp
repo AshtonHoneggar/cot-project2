@@ -1,10 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-//#include <algorithm> // No longer needed w/o min
 #include <stack>
 #include <cmath>
-//#include <limits> // No longer needed w/o min
 #include <queue>
 
 #define ERROR 0.00001 // Used to compare doubles
@@ -157,7 +155,6 @@ int main()
 	{
 		for(int j = 0; j <= r; ++j){
 			output << answer.front();
-			cout << answer.front(); // TEMP: for debugging
 			answer.pop();
 		}
 	}

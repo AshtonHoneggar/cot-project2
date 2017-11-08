@@ -100,7 +100,7 @@ queue <string> fastestPaths(double** map, double** in, int r, int c) {
 		
 		// Reverse the stack contents into a queue for output formatting
 		while(!path.empty()){
-			ans.push(path.top()); //Have to check in C4 lab if this works. IDE says to cast to static_cast<basic_string<char> &&>, fails when compiling on cmd line.
+			ans.push(path.top());
 			path.pop();
 		}
 	}

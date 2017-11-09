@@ -1,3 +1,14 @@
+/*********************************************************************
+ * project2.cpp
+ * Authors: Group 7:
+ * 	Ashton Honeggar, Gabriel Contreras, Simon Balis
+ * Date Last Revised: 11/9/17
+ *--------------------------------------------------------------------
+ * Takes input terrain map from input.txt, and then outputs the
+ * shortest paths to reach each of the bottom border tiles from the
+ * top border into output.txt
+ *********************************************************************/
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -116,7 +127,7 @@ int main()
 {
 	// Input file for reading terrain array
 	ifstream input;
-    input.open("input-small.txt");
+    input.open("input.txt");
 	if (!input) { // Print error and exit if cannot open for read
 		cout << "Error opening input.txt for reading." << endl;
 		return 1;
